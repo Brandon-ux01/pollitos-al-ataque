@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <!-- Permite adaptar el juego a diferentes tamaños de pantalla -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pollitos al Ataque</title>
+
+    <!-- Hoja de estilos principal -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         MENÚ PRINCIPAL
+         ===================================================== -->
+
+    <main id="menu-principal">
+
+        <h1>POLLITOS AL ATAQUE</h1>
+
+        <p class="subtitulo">
+            🪱 Gusanos vs 🐔 Pollos
+        </p>
+
+        <!-- Puntuación acumulada -->
+        <div class="puntuacion">
+
+            Puntos:
+            <span id="puntos">0</span>
+
+        </div>
+
+
+        <!-- Opciones del menú -->
+        <nav class="menu">
+
+            <button id="btn-jugar">
+                ▶ Jugar
+            </button>
+
+            <button id="btn-dificultad">
+
+                ⚙ Dificultad:
+                <span id="dificultad">Normal</span>
+
+            </button>
+
+            <button id="btn-salir">
+                ✕ Salir
+            </button>
+
+        </nav>
+
+
+        <!-- Controles del menú -->
+        <p class="instrucciones">
+
+            ↑ ↓ Navegar
+            &nbsp; | &nbsp;
+            ENTER Seleccionar
+
+        </p>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         ÁREA DEL JUEGO
+
+         Esta sección inicialmente está oculta.
+         JavaScript creará el Canvas cuando presionemos Jugar.
+         ===================================================== -->
+
+    <main id="pantalla-juego">
+
+        <h2>
+            Preparando batalla...
+        </h2>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         ARCHIVOS JAVASCRIPT
+         ===================================================== -->
+
+    <!-- Primero se carga Terreno porque Juego lo necesita -->
+    <script src="js/terreno.js"></script>
+
+    <!-- Motor principal del juego -->
+    <script src="js/juego.js"></script>
+
+    <!-- Menú y control general -->
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

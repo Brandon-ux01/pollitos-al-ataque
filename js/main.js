@@ -115,26 +115,47 @@ function cambiarDificultad() {
 function iniciarJuego() {
 
     console.log(
-        "Iniciando juego con dificultad:",
+        "Iniciando Pollitos al Ataque"
+    );
+
+    console.log(
+        "Dificultad:",
         dificultades[dificultadActual]
     );
 
+
+    // Ocultamos el menú.
     menuPrincipal.style.display = "none";
 
+
+    // Mostramos la pantalla del juego.
     pantallaJuego.style.display = "block";
 
+
+    // Creamos el Canvas.
     pantallaJuego.innerHTML = `
-        <h2>🐔 Preparando la batalla...</h2>
+        <h2>🐔 Pollitos al Ataque</h2>
 
         <p>
             🪱 Gusanos vs 🐔 Pollos
         </p>
 
-        <p>
-            Dificultad:
-            ${dificultades[dificultadActual]}
-        </p>
+        <canvas id="canvas-juego"></canvas>
     `;
+
+
+    // Buscamos el Canvas que acabamos de crear.
+    const canvas =
+        document.getElementById("canvas-juego");
+
+
+    // Creamos nuestro objeto Juego.
+    const juego =
+        new Juego(canvas);
+
+
+    // Iniciamos el ciclo del juego.
+    juego.iniciar();
 }
 
 
