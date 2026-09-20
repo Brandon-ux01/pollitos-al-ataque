@@ -1,265 +1,146 @@
 /* =========================================================
    POLLITOS AL ATAQUE
-   Archivo principal del juego
+   Menú principal y control de dificultad.
    ========================================================= */
 
-
-/* ---------------------------------------------------------
-   VARIABLES DEL MENÚ
-   --------------------------------------------------------- */
-
-// Índice de la opción actualmente seleccionada.
-//
-// 0 = Jugar
-// 1 = Dificultad
-// 2 = Salir
 let opcionSeleccionada = 0;
-
-
-// Dificultades disponibles.
-const dificultades = [
-    "Fácil",
-    "Normal",
-    "Difícil"
-];
-
-
-// Dificultad actual.
-//
-// Comenzamos en Normal.
+const dificultades = ["Fácil", "Normal", "Difícil"];
 let dificultadActual = 1;
+window.dificultadActual = dificultades[dificultadActual];
 
+const menuPrincipal = document.getElementById("menu-principal");
+const pantallaJuego = document.getElementById("pantalla-juego");
+const botonJugar = document.getElementById("btn-jugar");
+const botonDificultad = document.getElementById("btn-dificultad");
+const botonSalir = document.getElementById("btn-salir");
+const botonReiniciar = document.getElementById("btn-reiniciar");
+const botonMenu = document.getElementById("btn-menu");
+const textoDificultad = document.getElementById("dificultad-actual");
+const elementoPuntos = document.getElementById("puntos");
 
-/* ---------------------------------------------------------
-   ELEMENTOS HTML
-   --------------------------------------------------------- */
-
-const menuPrincipal =
-    document.getElementById("menu-principal");
-
-const pantallaJuego =
-    document.getElementById("pantalla-juego");
-
-const botonJugar =
-    document.getElementById("btn-jugar");
-
-const botonDificultad =
-    document.getElementById("btn-dificultad");
-
-const botonSalir =
-    document.getElementById("btn-salir");
-
-const textoDificultad =
-    document.getElementById("dificultad");
-
-
-/* ---------------------------------------------------------
-   SISTEMA DE PUNTOS
-   --------------------------------------------------------- */
-
-// Recuperamos los puntos guardados anteriormente.
-//
-// Si todavía no existen, comenzamos en 0.
-let puntos =
-    Number(localStorage.getItem("pollitosPuntos")) || 0;
-
-
-// Mostramos los puntos en pantalla.
-document.getElementById("puntos").textContent = puntos;
-
-
-/* ---------------------------------------------------------
-   ACTUALIZAR OPCIÓN DEL MENÚ
-   --------------------------------------------------------- */
+let puntos = Number(localStorage.getItem("pollitosPuntos")) || 0;
+if (elementoPuntos) {
+    elementoPuntos.textContent = puntos;
+}
 
 function actualizarMenu() {
-
-    const botones =
-        document.querySelectorAll(".menu button");
-
-
+    const botones = document.querySelectorAll(".menu-button");
     botones.forEach((boton, indice) => {
-
-        boton.classList.toggle(
-            "seleccionado",
-            indice === opcionSeleccionada
-        );
-
+        boton.classList.toggle("seleccionado", indice === opcionSeleccionada);
     });
 }
 
-
-/* ---------------------------------------------------------
-   CAMBIAR DIFICULTAD
-   --------------------------------------------------------- */
-
 function cambiarDificultad() {
+    dificultadActual = (dificultadActual + 1) % dificultades.length;
+    window.dificultadActual = dificultades[dificultadActual];
 
-    dificultadActual++;
-
-    // Si llegamos al final, volvemos a Fácil.
-    if (dificultadActual >= dificultades.length) {
-        dificultadActual = 0;
+    if (textoDificultad) {
+        textoDificultad.textContent = window.dificultadActual;
     }
-
-    textoDificultad.textContent =
-        dificultades[dificultadActual];
-
 }
 
-
-/* ---------------------------------------------------------
-   INICIAR JUEGO
-   --------------------------------------------------------- */
-
 function iniciarJuego() {
+    if (menuPrincipal) {
+        menuPrincipal.style.display = "none";
+    }
 
-    console.log(
-        "Iniciando Pollitos al Ataque"
-    );
+    if (pantallaJuego) {
+        pantallaJuego.style.display = "block";
+    }
 
-    console.log(
-        "Dificultad:",
-        dificultades[dificultadActual]
-    );
+    const canvas = document.getElementById("canvas-juego");
+    if (!canvas) {
+        console.error("No se encontró el canvas del juego.");
+        return;
+    }
 
+    if (window.juegoActual && typeof window.juegoActual.activo !== "undefined") {
+        window.juegoActual.activo = false;
+    }
 
-    // Ocultamos el menú.
-    menuPrincipal.style.display = "none";
-
-
-    // Mostramos la pantalla del juego.
-    pantallaJuego.style.display = "block";
-
-
-    // Creamos el Canvas.
-    pantallaJuego.innerHTML = `
-        <h2>🐔 Pollitos al Ataque</h2>
-
-        <p>
-            🪱 Gusanos vs 🐔 Pollos
-        </p>
-
-        <canvas id="canvas-juego"></canvas>
-    `;
-
-
-    // Buscamos el Canvas que acabamos de crear.
-    const canvas =
-        document.getElementById("canvas-juego");
-
-
-    // Creamos nuestro objeto Juego.
-    const juego =
-        new Juego(canvas);
-
-
-    // Iniciamos el ciclo del juego.
+    const juego = new Juego(canvas);
+    window.juegoActual = juego;
     juego.iniciar();
 }
 
+/**
+ * Reinicia la partida creando una nueva instancia del juego.
+ */
+function reiniciarJuego() {
+    iniciarJuego();
+}
 
-/* ---------------------------------------------------------
-   EVENTOS DE LOS BOTONES
-   --------------------------------------------------------- */
-
-botonJugar.addEventListener(
-    "click",
-    iniciarJuego
-);
-
-
-botonDificultad.addEventListener(
-    "click",
-    cambiarDificultad
-);
-
-
-botonSalir.addEventListener(
-    "click",
-    () => {
-
-        alert(
-            "Gracias por jugar a Pollitos al Ataque."
-        );
-
+/**
+ * Detiene la partida actual y vuelve al menú principal.
+ */
+function volverAlMenu() {
+    if (window.juegoActual) {
+        window.juegoActual.activo = false;
+        window.juegoActual.estado = "finalizado";
     }
-);
 
-
-/* ---------------------------------------------------------
-   CONTROLES DEL MENÚ CON TECLADO
-   --------------------------------------------------------- */
-
-document.addEventListener(
-    "keydown",
-    (evento) => {
-
-        /*
-         * Flecha abajo:
-         * mueve la selección hacia abajo.
-         */
-        if (evento.key === "ArrowDown") {
-
-            opcionSeleccionada++;
-
-            if (opcionSeleccionada > 2) {
-                opcionSeleccionada = 0;
-            }
-
-            actualizarMenu();
-        }
-
-
-        /*
-         * Flecha arriba:
-         * mueve la selección hacia arriba.
-         */
-        if (evento.key === "ArrowUp") {
-
-            opcionSeleccionada--;
-
-            if (opcionSeleccionada < 0) {
-                opcionSeleccionada = 2;
-            }
-
-            actualizarMenu();
-        }
-
-
-        /*
-         * ENTER:
-         * ejecuta la opción seleccionada.
-         */
-        if (evento.key === "Enter") {
-
-            if (opcionSeleccionada === 0) {
-
-                iniciarJuego();
-
-            } else if (opcionSeleccionada === 1) {
-
-                cambiarDificultad();
-
-            } else if (opcionSeleccionada === 2) {
-
-                botonSalir.click();
-
-            }
-
-        }
-
+    if (pantallaJuego) {
+        pantallaJuego.style.display = "none";
     }
-);
 
+    if (menuPrincipal) {
+        menuPrincipal.style.display = "block";
+    }
 
-/* ---------------------------------------------------------
-   INICIALIZACIÓN
-   --------------------------------------------------------- */
+    puntos = Number(localStorage.getItem("pollitosPuntos")) || 0;
 
-// Marcamos "Jugar" como primera opción.
+    if (elementoPuntos) {
+        elementoPuntos.textContent = puntos;
+    }
+}
+
+if (botonJugar) {
+    botonJugar.addEventListener("click", iniciarJuego);
+}
+
+if (botonDificultad) {
+    botonDificultad.addEventListener("click", cambiarDificultad);
+}
+
+if (botonSalir) {
+    botonSalir.addEventListener("click", () => {
+        alert("Gracias por jugar a Pollitos al Ataque.");
+    });
+}
+
+if (botonReiniciar) {
+    botonReiniciar.addEventListener("click", reiniciarJuego);
+}
+
+if (botonMenu) {
+    botonMenu.addEventListener("click", volverAlMenu);
+}
+
+document.addEventListener("keydown", (evento) => {
+    if (evento.key === "ArrowDown") {
+        opcionSeleccionada = (opcionSeleccionada + 1) % 3;
+        actualizarMenu();
+    }
+
+    if (evento.key === "ArrowUp") {
+        opcionSeleccionada = (opcionSeleccionada - 1 + 3) % 3;
+        actualizarMenu();
+    }
+
+    if (evento.key === "Enter") {
+        if (opcionSeleccionada === 0) {
+            iniciarJuego();
+        } else if (opcionSeleccionada === 1) {
+            cambiarDificultad();
+        } else if (opcionSeleccionada === 2) {
+            botonSalir?.click();
+        }
+    }
+});
+
+if (textoDificultad) {
+    textoDificultad.textContent = window.dificultadActual;
+}
+
 actualizarMenu();
-
-console.log(
-    "Pollitos al Ataque iniciado correctamente."
-);
+console.log("Pollitos al Ataque iniciado correctamente.");

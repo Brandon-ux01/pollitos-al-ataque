@@ -1,228 +1,64 @@
-/* =========================================================
-   POLLITOS AL ATAQUE
-   Archivo: terreno.js
-
-   Responsabilidad:
-   Crear y dibujar las plataformas del escenario.
-   ========================================================= */
-
-
 /**
- * Representa el terreno de la cancha.
+ * Clase Terreno
+ *
+ * Define las plataformas y el fondo del mapa.
  */
 class Terreno {
-
     constructor(ctx, ancho, alto) {
-
         this.ctx = ctx;
-
         this.ancho = ancho;
-
         this.alto = alto;
-
-
-        /*
-         * Cada plataforma contiene:
-         *
-         * x     = posición horizontal
-         * y     = posición vertical
-         * ancho = longitud
-         * alto  = grosor
-         */
         this.plataformas = [
+            // Plataformas inferiores: sirven como base de la arena.
+            { x: 0, y: 500, ancho: 190, alto: 100 },
+            { x: 230, y: 445, ancho: 190, alto: 155 },
+            { x: 470, y: 510, ancho: 180, alto: 90 },
+            { x: 700, y: 445, ancho: 200, alto: 155 },
+            { x: 950, y: 500, ancho: 250, alto: 100 },
 
-            {
-                x: 0,
-                y: 500,
-                ancho: 150,
-                alto: 100
-            },
+            // Plataformas intermedias.
+            { x: 80, y: 370, ancho: 180, alto: 25 },
+            { x: 330, y: 315, ancho: 150, alto: 25 },
+            { x: 600, y: 370, ancho: 180, alto: 25 },
+            { x: 900, y: 315, ancho: 170, alto: 25 },
+            { x: 1090, y: 390, ancho: 100, alto: 25 },
 
-            {
-                x: 185,
-                y: 445,
-                ancho: 145,
-                alto: 155
-            },
-
-            {
-                x: 365,
-                y: 510,
-                ancho: 135,
-                alto: 90
-            },
-
-            {
-                x: 535,
-                y: 445,
-                ancho: 115,
-                alto: 155
-            },
-
-            {
-                x: 680,
-                y: 500,
-                ancho: 120,
-                alto: 100
-            },
-
-
-            // Plataformas superiores.
-
-            {
-                x: 75,
-                y: 350,
-                ancho: 140,
-                alto: 25
-            },
-
-            {
-                x: 285,
-                y: 305,
-                ancho: 120,
-                alto: 25
-            },
-
-            {
-                x: 470,
-                y: 350,
-                ancho: 120,
-                alto: 25
-            },
-
-            {
-                x: 650,
-                y: 315,
-                ancho: 105,
-                alto: 25
-            }
+            // Plataformas superiores: crean rutas y posiciones elevadas.
+            { x: 20, y: 245, ancho: 125, alto: 22 },
+            { x: 215, y: 185, ancho: 155, alto: 22 },
+            { x: 1110, y: 145, ancho: 75, alto: 22 }
         ];
     }
 
-
-    /**
-     * Dibuja todas las plataformas.
-     */
     dibujar() {
-
         const ctx = this.ctx;
 
+        ctx.fillStyle = "#7b5c33";
+        ctx.fillRect(0, 530, this.ancho, 70);
 
-        this.plataformas.forEach(
-            (plataforma) => {
+        this.plataformas.forEach((plataforma) => {
+            ctx.fillStyle = "#70482f";
+            ctx.fillRect(plataforma.x, plataforma.y, plataforma.ancho, plataforma.alto);
 
-                this.dibujarPlataforma(
-                    plataforma
-                );
+            ctx.fillStyle = "#3f7a46";
+            ctx.fillRect(plataforma.x, plataforma.y, plataforma.ancho, 10);
 
+            ctx.fillStyle = "#96613c";
+            for (let x = plataforma.x + 15; x < plataforma.x + plataforma.ancho; x += 35) {
+                ctx.fillRect(x, plataforma.y + 25, 12, 6);
             }
-        );
-
-
-        // Dibujamos agua debajo del escenario.
-        this.dibujarAgua();
-    }
-
-
-    /**
-     * Dibuja una plataforma individual.
-     */
-    dibujarPlataforma(plataforma) {
-
-        const ctx = this.ctx;
-
-
-        // Tierra.
-        ctx.fillStyle = "#70482f";
-
-        ctx.fillRect(
-            plataforma.x,
-            plataforma.y,
-            plataforma.ancho,
-            plataforma.alto
-        );
-
-
-        // Césped.
-        ctx.fillStyle = "#3f7a46";
-
-        ctx.fillRect(
-            plataforma.x,
-            plataforma.y,
-            plataforma.ancho,
-            10
-        );
-
-
-        // Detalles de la tierra.
-        ctx.fillStyle = "#96613c";
-
-        for (
-            let x = plataforma.x + 15;
-            x < plataforma.x + plataforma.ancho;
-            x += 35
-        ) {
-
-            ctx.fillRect(
-                x,
-                plataforma.y + 25,
-                12,
-                6
-            );
-        }
-    }
-
-
-    /**
-     * Dibuja el agua debajo de las plataformas.
-     */
-    dibujarAgua() {
-
-        const ctx = this.ctx;
+        });
 
         ctx.fillStyle = "#0b3854";
+        ctx.fillRect(0, 530, this.ancho, 70);
 
-        ctx.fillRect(
-            0,
-            530,
-            this.ancho,
-            70
-        );
-
-
-        // Ondas del agua.
         ctx.strokeStyle = "#4fc3dc";
-
         ctx.lineWidth = 2;
-
-
-        for (
-            let x = 0;
-            x < this.ancho;
-            x += 55
-        ) {
-
+        for (let x = 0; x < this.ancho; x += 55) {
             ctx.beginPath();
-
-            ctx.moveTo(
-                x,
-                550
-            );
-
-            ctx.quadraticCurveTo(
-                x + 14,
-                542,
-                x + 28,
-                550
-            );
-
-            ctx.quadraticCurveTo(
-                x + 42,
-                558,
-                x + 55,
-                550
-            );
-
+            ctx.moveTo(x, 550);
+            ctx.quadraticCurveTo(x + 14, 542, x + 28, 550);
+            ctx.quadraticCurveTo(x + 42, 558, x + 55, 550);
             ctx.stroke();
         }
     }

@@ -13,27 +13,30 @@
 
 body {
     margin: 0;
+    width: 100vw;
     min-height: 100vh;
-
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #173452,
-            #07111f 70%
-        );
-
+    background: radial-gradient(circle at top, #173452, #07111f 70%);
     color: #ffffff;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+#canvas-juego {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    border: 0;
+    border-radius: 0;
+    background: #0a1d2c;
+    box-shadow: none;
+}
 
 /* ---------------------------------------------------------
    Menú principal
@@ -41,137 +44,70 @@ body {
 
 #menu-principal {
     width: min(90%, 600px);
-
     padding: 40px;
-
     text-align: center;
-
     background: rgba(8, 20, 35, 0.95);
-
     border: 1px solid #29445f;
-
     border-radius: 20px;
-
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
-
-
-/* ---------------------------------------------------------
-   Título
-   --------------------------------------------------------- */
 
 h1 {
     margin: 0;
-
     font-size: clamp(40px, 8vw, 70px);
-
-    background:
-        linear-gradient(
-            90deg,
-            #62e6ff,
-            #a8ff72
-        );
-
+    background: linear-gradient(90deg, #62e6ff, #a8ff72);
     -webkit-background-clip: text;
     background-clip: text;
-
     color: transparent;
 }
 
 .subtitulo {
     margin-top: 10px;
-
     color: #a8bfd3;
-
     font-size: 20px;
 }
 
-
-/* ---------------------------------------------------------
-   Puntuación
-   --------------------------------------------------------- */
-
 .puntuacion {
-    margin: 30px 0;
-
+    margin: 20px 0;
     color: #ffd166;
-
     font-size: 22px;
-
     font-weight: bold;
 }
 
-
-/* ---------------------------------------------------------
-   Botones del menú
-   --------------------------------------------------------- */
-
 .menu {
     display: flex;
-
     flex-direction: column;
-
     gap: 12px;
 }
 
 .menu button {
     padding: 16px;
-
     border: 1px solid #31506d;
-
     border-radius: 12px;
-
     background: #10283e;
-
     color: #ffffff;
-
     font-size: 18px;
-
     cursor: pointer;
-
-    transition:
-        background 0.2s,
-        border-color 0.2s,
-        transform 0.2s;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
-
-
-/* Efecto al pasar el mouse */
 
 .menu button:hover {
     background: #173c59;
-
     border-color: #62e6ff;
-
     transform: translateY(-2px);
 }
 
-
-/* Botón seleccionado mediante teclado */
-
 .menu button.seleccionado {
     background: #173c59;
-
     border-color: #62e6ff;
-
-    box-shadow:
-        0 0 15px rgba(98, 230, 255, 0.2);
+    box-shadow: 0 0 15px rgba(98, 230, 255, 0.2);
 }
-
-
-/* ---------------------------------------------------------
-   Texto de instrucciones
-   --------------------------------------------------------- */
 
 .instrucciones {
     margin-top: 25px;
-
     color: #819ab2;
-
     font-size: 13px;
 }
-
 
 /* ---------------------------------------------------------
    Pantalla del juego
@@ -179,17 +115,86 @@ h1 {
 
 #pantalla-juego {
     display: none;
-
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
     text-align: center;
 }
 
+/* ---------------------------------------------------------
+   Pantalla final
+   --------------------------------------------------------- */
+
+.pantalla-final {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(4, 12, 22, 0.78);
+}
+
+.pantalla-final[hidden] {
+    display: none;
+}
+
+.panel-final {
+    width: min(90%, 560px);
+    padding: 36px 28px;
+    border: 2px solid #62e6ff;
+    border-radius: 18px;
+    background: rgba(8, 20, 35, 0.97);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.panel-final h2 {
+    margin: 0;
+    color: #ffd166;
+    font-size: clamp(32px, 6vw, 54px);
+}
+
+.panel-final p {
+    margin: 16px 0 0;
+    color: #ffffff;
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: bold;
+}
+
+#resultado-puntos {
+    color: #a8ff72;
+}
+
+.acciones-finales {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.boton-final {
+    padding: 14px 20px;
+    border: 1px solid #31506d;
+    border-radius: 10px;
+    background: #10283e;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.boton-final:hover {
+    background: #173c59;
+    border-color: #62e6ff;
+}
 
 /* ---------------------------------------------------------
    Responsive
    --------------------------------------------------------- */
 
 @media (max-width: 600px) {
-
     #menu-principal {
         padding: 25px;
     }
@@ -198,4 +203,8 @@ h1 {
         font-size: 40px;
     }
 
+    #canvas-juego {
+        width: 100vw;
+        height: 100vh;
+    }
 }
