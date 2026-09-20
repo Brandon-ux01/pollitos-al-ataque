@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pollitos al Ataque</title>
+  <link rel="stylesheet" crossorigin href="/assets/index-B7uCYQ7S.css">
+</head>
+
+<body>
+    <main id="menu-principal">
+        <h1>POLLITOS AL ATAQUE</h1>
+
+        <p class="subtitulo">🐔 Pollitos vs 🪱 Gusanos</p>
+
+        <p class="puntuacion">
+            Dificultad:
+            <span id="dificultad-actual">Normal</span>
+        </p>
+
+        <p class="puntuacion">
+            Puntos:
+            <span id="puntos">0</span>
+        </p>
+
+        <div class="menu">
+            <button id="btn-jugar" class="menu-button seleccionado">Jugar</button>
+            <button id="btn-dificultad" class="menu-button">Dificultad</button>
+            <button id="btn-salir" class="menu-button">Salir</button>
+        </div>
+
+        <p class="instrucciones">Usa ↑ ↓ y Enter para navegar</p>
+    </main>
+
+    <section id="pantalla-juego" style="display: none;">
+        <canvas id="canvas-juego" width="1200" height="600"></canvas>
+
+        <div id="pantalla-final" class="pantalla-final" hidden>
+            <div class="panel-final">
+                <h2 id="resultado-titulo"></h2>
+                <p id="resultado-mensaje"></p>
+                <p id="resultado-puntos"></p>
+
+                <div class="acciones-finales">
+                    <button id="btn-reiniciar" class="boton-final">
+                        Jugar de nuevo
+                    </button>
+                    <button id="btn-menu" class="boton-final">
+                        Volver al menú
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/terreno.js?v=arena-ancha-20260919"></script>
+    <script src="js/particulas.js?v=arena-ancha-20260919"></script>
+    <script src="js/explosion.js?v=arena-ancha-20260919"></script>
+    <script src="js/canon.js?v=arena-ancha-20260919"></script>
+    <script src="js/pollo.js?v=arena-ancha-20260919"></script>
+    <script src="js/gusano.js?v=arena-ancha-20260919"></script>
+    <script src="js/proyectil.js?v=arena-ancha-20260919"></script>
+    <script src="js/turnos.js?v=fin-partida-20260920"></script>
+    <script src="js/ia.js?v=ia-un-disparo-20260920"></script>
+    <script src="js/interfaz.js?v=arena-ancha-20260919"></script>
+    <script src="js/juego.js?v=fin-partida-20260920"></script>
+    <script src="js/main.js?v=arena-ancha-20260919"></script>
+</body>
+
+</html>
